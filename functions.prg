@@ -27,7 +27,7 @@ end
 		 fichero=fopen(mapa,o_read);
 		 
 			loop
-			       say(tiempo);
+			      // say(tiempo);
 		           tgraph=fgets(fichero);
 			       if(tgraph=>-1);
 			       graph=tgraph;
