@@ -21,13 +21,16 @@ end
      int tgraph;
      int tx;
      int ty;
+	 int gfondo;
+
   begin
          set_fps(0,0);
         // signal(cursor(),s_kill);
 		 fichero=fopen(mapa,o_read);
 		 
 			loop
-			      // say(tiempo);
+			       linea=fgets(fichero);
+                   if(linea=="<tile>");				   
 		           tgraph=fgets(fichero);
 			       if(tgraph=>-1);
 			       graph=tgraph;
@@ -43,9 +46,9 @@ end
 			       proceso=put(tgraph,tx,ty);
 		           tiempo=tiempo+1;
 	               if(tiempo=>tiempo_espera);
-	               set_fps(60,0);
-	        end
-			       if(feof(fichero));
+			end	   
+		end
+            		if(feof(fichero));
 			       frame;
 			   break;
 			end

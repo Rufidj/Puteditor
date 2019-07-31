@@ -11,15 +11,13 @@ global
 int raton;
 int opcion=0;
 int opcion_mapa;
+byte bfile;
 
 begin
           set_fps(0,0);
           set_mode(640,480);
           tiles=fpg_load("gfx/tiles.fpg");
-		  pinta_mapa("menu.ped",1000);
 		  menu_principal();
-
-
         loop
              write_var(0,40,40,14,frame_info.fps);
 			frame;
@@ -63,12 +61,15 @@ y=16;
                 if(key(_enter));
                 while(key(_enter));
             frame;
-           end
+           end 
+		   if(opcion_mapa==1);
+		   fputs(fichero,"<tile>"); 
            put(graph,x,y);
            fputs(fichero,graph);
            fputs(fichero,x);
 		   fputs(fichero,y);
-       end 
+        end
+	 end 
 	             if(mouse.wheelup);
 	             while(mouse.wheelup);
 	        frame;
@@ -145,6 +146,7 @@ end
 process menu_principal();
 begin     
           opcion=0; 
+		  pinta_mapa("menu.ped",1000);
           write_delete(all_text);
           write(0,280,100,14,"1. Nuevo mapa");
           write(0,280,120,14,"2. Editor de durezas");
@@ -248,10 +250,9 @@ write(0,280,470,14,"Creado por Rufidj en 2019");
 	   switch(opcion_mapa)
 	   
                 case 1:
- 				nuevo();
+ 				nuevo_fondo();
 			end
 			    case 2:
-				explorador();
 			end
 		        case 3:
             end
@@ -263,13 +264,16 @@ write(0,280,470,14,"Creado por Rufidj en 2019");
    end
 end
   
-process nuevo();
+process nuevo_fondo();
 begin           
                 
 				write_delete(all_text);
                 let_me_alone();
-                cursor();
-	            fichero=fopen("levels/mapa.ped",o_write);
+                cursor();       
+	            fichero=fopen("levels/mapa.ped",o_readwrite);
+				bfile=ftell(fichero);
+				fseek(fichero,bfile,seek_cur);
+				say(bfile);
 				loop
 				if(key(_esc));
 				while(key(_esc));
@@ -286,6 +290,9 @@ begin
      frame;
     end	   
 end
+
+
+
 
 process explorador();
 private
@@ -309,8 +316,6 @@ begin
 	 end
 
 
-
-	
 
 		
 	
