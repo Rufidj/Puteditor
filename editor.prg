@@ -12,14 +12,17 @@ int raton;
 int opcion=0;
 int opcion_mapa;
 byte bfile;
+int pantalla;
 
 begin
           set_fps(0,0);
-          set_mode(640,480);
+         // set_mode(800,600,mode_fullscreen);
+		    set_mode(800,600);
           tiles=fpg_load("gfx/tiles.fpg");
 		  menu_principal();
         loop
              write_var(0,40,40,14,frame_info.fps);
+			 	
 			frame;
 		end
      end
@@ -94,49 +97,45 @@ end
 
 process pincel(x,y);
 private
-      byte r=255;
-      byte g=74;
-      byte b=74;
-	  byte a=120;
-	  int col;
-	  int xp;   // coordenada x del principio
-	  int yp;   // coordenada y del principio 
-	  int xf;   // coordenada x del final
-	  int yf;   // coordenada y del final
+      int r;
+	  int g;
+	  int b;
+	  int contcolor;
 	  
 begin
-      raton=map_load("gfx/mouse.png");
-      mouse.graph=raton;
+	  r=map_load("gfx/red.png");
+	  g=map_load("gfx/green.png");
+	  b=map_load("gfx/blue.png");
+      mouse.graph=r;
 	  z=-255;
-	  col=rgba(r,g,b,a);
-	  drawing_color(col);
+	
              loop
 	              if(mouse.left);
-	              while(mouse.left);
-	       frame;
-	      end
-	      xp=mouse.x;
-	      yp=mouse.y;
+		          put(mouse.graph,mouse.x,mouse.y);
+	 
 	  end
-	              if(mouse.right);
-	              while(mouse.right);
-	       frame;
-	      end
-	      xf=mouse.x;
-	      yf=mouse.y;
-	      draw_line(xp,yp,xf,yf);
-	  end
-	             if(mouse.wheelup);
-	             while(mouse.wheelup);
-	       frame;
-	      end
-	      col=rgb(r++,g++,b++);
-	      drawing_color(col);
-	      say("Red " +r);
-	      say("Green " +g);
-	      say("Blue " +b);
-	      say("Alpha " +a);
-	  end
+	             if(key(_r));
+				 while(key(_r));
+				 frame;
+				 end
+				 mouse.graph=r;
+				 end
+				  if(key(_g));
+				 while(key(_g));
+				 frame;
+				 end
+				 mouse.graph=g;
+				 end
+				 
+				  if(key(_b));
+				 while(key(_b));
+				 frame;
+				 end
+				 mouse.graph=b;
+				 end
+				 
+				 
+	   
 	  
     frame;
    end
@@ -203,12 +202,14 @@ begin
 					write_delete(all_text);
 					opcion=0;
 					let_me_alone();
+				
 					pinta_mapa("levels/mapa.ped",1000);
 				end
 	                case 4:
 					write_delete(all_text);
 					opcion=0;
-					
+					pantalla=screen_get();
+					png_save(0,pantalla,"png.png");
 					   fclose(fichero);
 	                say("Fichero salvado : " + &mapa);
 	                exit("",0);
@@ -270,10 +271,7 @@ begin
 				write_delete(all_text);
                 let_me_alone();
                 cursor();       
-	            fichero=fopen("levels/mapa.ped",o_readwrite);
-				bfile=ftell(fichero);
-				fseek(fichero,bfile,seek_cur);
-				say(bfile);
+	            fichero=fopen("levels/mapa.ped",o_write);
 				loop
 				if(key(_esc));
 				while(key(_esc));
@@ -294,26 +292,8 @@ end
 
 
 
-process explorador();
-private
-string extension = "*.ped";
-string archivo;
-int cont=1;
-begin
-     let_me_alone();
-	 write_delete(all_text);
-     chdir("levels");
-     archivo=glob(extension);
-	 while(archivo!="");
-	 write(0,10,cont*10,0,cont+"- "+archivo); 
-	 cont=cont+1;
-	 archivo=glob(extension);
-	 end
-     loop
-	 
-	 frame;
-	 end
-	 end
+
+	
 
 
 
