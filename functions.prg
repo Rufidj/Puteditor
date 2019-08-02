@@ -7,6 +7,8 @@ int gfx_bola;
 int tiempo=0;
 int tiempo_espera=0;
 string mapa;
+string backstr = "gfx/back.fpg";
+int back;
 
 process put(graph,x,y);
 begin
@@ -21,14 +23,15 @@ end
      int tgraph;
      int tx;
      int ty;
-	 int gfondo;
+	 string gfondo;
 
   begin
          set_fps(0,0);
         // signal(cursor(),s_kill);
 		 fichero=fopen(mapa,o_read);
-		 
+     
 			loop
+			
 			       linea=fgets(fichero);
                    if(linea=="<tile>");				   
 		           tgraph=fgets(fichero);
@@ -43,14 +46,14 @@ end
 			       if(ty=>0);
 			       y=ty;
 		    end
+
+					end	 
 			       proceso=put(tgraph,tx,ty);
 		           tiempo=tiempo+1;
 	               if(tiempo=>tiempo_espera);
 			end	   
-		end
             		if(feof(fichero));
-			       frame;
-			   break;
+					break;
 			end
 	    frame;
       end

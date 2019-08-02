@@ -14,6 +14,7 @@ int opcion_mapa;
 byte bfile;
 int pantalla;
 
+
 begin
           set_fps(0,0);
          // set_mode(800,600,mode_fullscreen);
@@ -65,14 +66,12 @@ y=16;
                 while(key(_enter));
             frame;
            end 
-		   if(opcion_mapa==1);
-		   fputs(fichero,"<tile>"); 
            put(graph,x,y);
            fputs(fichero,graph);
            fputs(fichero,x);
 		   fputs(fichero,y);
         end
-	 end 
+	 
 	             if(mouse.wheelup);
 	             while(mouse.wheelup);
 	        frame;
@@ -145,6 +144,7 @@ end
 process menu_principal();
 begin     
           opcion=0; 
+		  let_me_alone();
 		  pinta_mapa("menu.ped",1000);
           write_delete(all_text);
           write(0,280,100,14,"1. Nuevo mapa");
@@ -185,10 +185,10 @@ begin
 			        switch(opcion);
 			
 			        case 1:
-					//opcion=0;
+					opcion=0;
 					write_delete(all_text);
 					let_me_alone();
-					menu_nuevo_mapa();
+					nuevo_mapa();
 					
 	            end
 			        case 2:	
@@ -219,59 +219,19 @@ begin
         end
 end
 
-process menu_nuevo_mapa();
-begin
-opcion_mapa=0;
-let_me_alone();
-write_delete(all_text);
-write(0,280,100,14,"A.FONDO ");
-write(0,280,120,14,"B.CAPA PRINCIPAL");
-write(0,280,140,14,"C.CAPA SECUNDARIA");
-write(0,280,160,14,"D. VOLVER");
-write(0,280,470,14,"Creado por Rufidj en 2019");	 
-   loop
-              if(key(_A));    // si pulsamos la tecla A , elegimo el MODO FONDO
-	   	      while(key(_A)); // ----------------------------------------------
-	        frame;
-	       end
-		   opcion_mapa=1;
-	   end
-	        if(key(_D));      // si pulsamos la tecla D , Volvemos al menu principal
-	   	      while(key(_D)); // ----------------------------------------------
-	        frame;
-	       end
-		   opcion_mapa=4;
-	   end
-            if(key(_B));      // si pulsamos la tecla D , Volvemos al menu principal
-	   	      while(key(_B)); // ----------------------------------------------
-	        frame;
-	       end
-		   opcion_mapa=2;
-	   end
-	   switch(opcion_mapa)
-	   
-                case 1:
- 				nuevo_fondo();
-			end
-			    case 2:
-			end
-		        case 3:
-            end
-                case 4:
-				menu_principal();
-			end	
-	      end
-    frame;
-   end
-end
+
   
-process nuevo_fondo();
+process nuevo_mapa();
 begin           
                 
 				write_delete(all_text);
                 let_me_alone();
                 cursor();       
-	            fichero=fopen("levels/mapa.ped",o_write);
+				if(file_exists("levels/mapa.ped")==true);
+				say("el fichero ya existe");
+	            //fichero=fopen("levels/mapa.ped",o_readwrite);
+				end
+				
 				loop
 				if(key(_esc));
 				while(key(_esc));
@@ -281,16 +241,13 @@ begin
 		        switch(opcion_mapa)
 				
 				    case 0:
-					menu_nuevo_mapa();
+					menu_principal();
 				end
 			   end
 	   end
      frame;
     end	   
 end
-
-
-
 
 
 	
